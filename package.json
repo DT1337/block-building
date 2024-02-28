@@ -1,0 +1,19 @@
+{
+	"name": "block-building",
+	"version": "1.0.0",
+	"description": "This is a simple block building simulator using three.js.",
+	"author": "DT1337",
+	"license": "ISC",
+	"type": "module",
+	"scripts": {
+		"start": "vite",
+		"build": "vite build",
+		"preview": "vite preview"
+	},
+	"dependencies": {
+		"three": "^0.161.0"
+	},
+	"devDependencies": {
+		"vite": "^5.1.4"
+	}
+}
