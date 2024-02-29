@@ -16,9 +16,28 @@ export function loadModels() {
 			scale: 5,
 		},
 		{
+			url: "/block-building/models/tropical_voxel_island.glb",
+			id: "tropical_island",
+			position: new THREE.Vector3(200, -3, -150),
+			scale: 3,
+			rotation: new THREE.Vector3(0, Math.PI, 0),
+		},
+		{
 			url: "/block-building/models/hot_air_ballon_voxel.glb",
 			id: "balloon",
-			position: new THREE.Vector3(0, 20, -75),
+			position: new THREE.Vector3(-65, 20, -65),
+			scale: 0.5,
+		},
+		{
+			url: "/block-building/models/hot_air_ballon_voxel.glb",
+			id: "balloon",
+			position: new THREE.Vector3(20, 20, 150),
+			scale: 0.5,
+		},
+		{
+			url: "/block-building/models/hot_air_ballon_voxel.glb",
+			id: "balloon",
+			position: new THREE.Vector3(140, 20, -20),
 			scale: 0.5,
 		},
 		{

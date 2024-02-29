@@ -89,37 +89,31 @@ export function updateCameraPosition() {
 }
 
 let animDuration = 10000;
-let animTime = 0;
-let animDirection = 1;
+let animStartTime = Date.now();
 let morphTargets = [new THREE.Vector3(1, 1, 1), new THREE.Vector3(1, 1.5, 1), new THREE.Vector3(1, 1, 1)];
 
 export function animateBalloon() {
-	let balloon;
+	let balloons = [];
 	scene.traverse(function (child) {
 		if (child.userData && child.userData.id === "balloon") {
-			balloon = child;
+			balloons.push(child);
 		}
 	});
 
-	animTime += animDirection * (1 / animDuration);
-	if (animTime >= 1) {
-		animDirection = -1;
-		animTime = 1;
-	} else if (animTime <= 0) {
-		animDirection = 1;
-		animTime = 0;
-	}
+	let currentTime = Date.now();
+	let elapsedTime = (currentTime - animStartTime) % animDuration;
+	let normalizedTime = elapsedTime / animDuration;
 
 	// rise balloon
-	let yPosition = Math.sin(animTime * Math.PI * 2) * 0.5;
-	balloon.position.y = yPosition;
+	let yPosition = Math.sin(normalizedTime * Math.PI * 2) * 0.5;
+	balloons.forEach((balloon) => (balloon.position.y = yPosition));
 
 	// morph balloon
-	let morphIndex = Math.floor(animTime * (morphTargets.length - 1));
+	let morphIndex = Math.floor(normalizedTime * (morphTargets.length - 1));
 	let nextMorphIndex = (morphIndex + 1) % morphTargets.length;
-	let morphValue = animTime * (morphTargets.length - 1) - morphIndex;
+	let morphValue = normalizedTime * (morphTargets.length - 1) - morphIndex;
 
 	let morphTarget = new THREE.Vector3();
 	morphTarget.lerpVectors(morphTargets[morphIndex], morphTargets[nextMorphIndex], morphValue);
-	balloon.scale.copy(morphTarget);
+	balloons.forEach((balloon) => balloon.scale.copy(morphTarget));
 }
