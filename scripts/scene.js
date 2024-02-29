@@ -1,41 +1,48 @@
 import * as THREE from "three";
 import { container, elements, gridDimensions, cellSize } from "./constants";
 import { currentBlockGeometry, isScenicViewActive, cameraPosition } from "./interaction";
+import { render } from "./initialize";
 
-// Define scene, camera, renderer, and other scene-related variables
+// Scene, camera, renderer, and other scene-related variables
 export let scene, camera, renderer;
 export let collisionHelper;
 export let previewBlock;
 
-// Function to create the scene
+/**
+ * Creates the 3D scene.
+ */
 export function createScene() {
-	// Create Scene
+	// Create the scene
 	scene = new THREE.Scene();
 	scene.background = new THREE.Color(0x0ea5e9);
 
-	// Create camera
+	// Create the camera
 	const aspectRatio = container.offsetWidth / container.offsetHeight;
 	camera = new THREE.PerspectiveCamera(45, aspectRatio, 1, 1000);
 	camera.position.set(cameraPosition.x, cameraPosition.y, cameraPosition.z);
 	camera.lookAt(0, 0, 0);
 
-	// Create renderer
+	// Create the renderer
 	renderer = new THREE.WebGLRenderer({ antialias: true });
 	renderer.setSize(container.offsetWidth, container.offsetHeight);
 	container.appendChild(renderer.domElement);
 }
 
-// Function to add the grid helper
+/**
+ * Adds the grid helper to the scene.
+ */
 export function addGridHelper() {
 	const gridHelper = new THREE.GridHelper(cellSize * gridDimensions, gridDimensions);
 	scene.add(gridHelper);
 
+	// Add collision helper for physics
 	const collisionHelperGeometry = new THREE.PlaneGeometry(128, 128);
 	collisionHelperGeometry.rotateX(-Math.PI / 2);
 	collisionHelper = new THREE.Mesh(collisionHelperGeometry, new THREE.MeshBasicMaterial({ visible: false }));
 	scene.add(collisionHelper);
 	elements.push(collisionHelper);
 
+	// Add surface for visual representation
 	const surfaceGeometry = new THREE.PlaneGeometry(10000, 10000);
 	surfaceGeometry.rotateX(-Math.PI / 2);
 	const surfaceMaterial = new THREE.MeshBasicMaterial({ color: 0x0ea5e9 });
@@ -43,17 +50,23 @@ export function addGridHelper() {
 	scene.add(surface);
 }
 
-// Function to add lights to the scene
+/**
+ * Adds lights to the scene.
+ */
 export function addLights() {
-	const light = new THREE.AmbientLight(0x323232, 16.0);
-	scene.add(light);
+	// Ambient light
+	const ambientLight = new THREE.AmbientLight(0x323232, 16.0);
+	scene.add(ambientLight);
 
+	// Directional light
 	const directionalLight = new THREE.DirectionalLight(0xffff66, 1);
 	directionalLight.position.copy(new THREE.Vector3(0, 30, 0));
 	scene.add(directionalLight);
 }
 
-// Function to create preview block
+/**
+ * Creates the preview block for placing new objects.
+ */
 function createPreviewBlock() {
 	const previewBlockGeometry = currentBlockGeometry;
 	const previewBlockMaterial = new THREE.MeshBasicMaterial({
@@ -64,14 +77,25 @@ function createPreviewBlock() {
 	previewBlock = new THREE.Mesh(previewBlockGeometry, previewBlockMaterial);
 }
 
-// Function to update the preview block
+/**
+ * Updates the preview block's position in the scene.
+ */
 export function updatePreviewBlock() {
-	scene.remove(previewBlock);
-	createPreviewBlock();
+	if (previewBlock) {
+		const previewPosition = new THREE.Vector3().copy(previewBlock.position);
+		scene.remove(previewBlock);
+		createPreviewBlock();
+		previewBlock.position.set(previewPosition);
+	} else {
+		createPreviewBlock();
+	}
 	scene.add(previewBlock);
+	render();
 }
 
-// Function to update the camera position
+/**
+ * Updates the camera position based on whether scenic view is active.
+ */
 export function updateCameraPosition() {
 	if (isScenicViewActive) {
 		const radius = 300;
@@ -88,11 +112,15 @@ export function updateCameraPosition() {
 	}
 }
 
+/**
+ * Animates the balloons in the scene.
+ */
+
 let animDuration = 10000;
 let animStartTime = Date.now();
 let morphTargets = [new THREE.Vector3(1, 1, 1), new THREE.Vector3(1, 1.5, 1), new THREE.Vector3(1, 1, 1)];
 
-export function animateBalloon() {
+export function animateBalloons() {
 	let balloons = [];
 	scene.traverse(function (child) {
 		if (child.userData && child.userData.id === "balloon") {
@@ -104,11 +132,11 @@ export function animateBalloon() {
 	let elapsedTime = (currentTime - animStartTime) % animDuration;
 	let normalizedTime = elapsedTime / animDuration;
 
-	// rise balloon
+	// Rise balloons
 	let yPosition = Math.sin(normalizedTime * Math.PI * 2) * 0.5;
 	balloons.forEach((balloon) => (balloon.position.y = yPosition));
 
-	// morph balloon
+	// Morph balloons
 	let morphIndex = Math.floor(normalizedTime * (morphTargets.length - 1));
 	let nextMorphIndex = (morphIndex + 1) % morphTargets.length;
 	let morphValue = normalizedTime * (morphTargets.length - 1) - morphIndex;

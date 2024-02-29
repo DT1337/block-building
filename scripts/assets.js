@@ -1,12 +1,16 @@
 import * as THREE from "three";
-import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js"; // Adjust the import path as needed
 import { cellSize } from "./constants.js";
 import { scene } from "./scene.js";
+import { render } from "./initialize.js";
 
+// Dictionary to store block geometries and textures
 export const blockGeometries = {};
-export const blockTextures = {};
+export const blockMaterials = {};
 
-// Function to load 3D models
+/**
+ * Loads 3D models into the scene.
+ */
 export function loadModels() {
 	const models = [
 		{
@@ -85,6 +89,7 @@ export function loadModels() {
 				modelWrapper.userData.id = modelData.id;
 
 				scene.add(modelWrapper);
+				render();
 			},
 			undefined,
 			function (error) {
@@ -94,7 +99,9 @@ export function loadModels() {
 	});
 }
 
-// Function to create custom models
+/**
+ * Creates custom models and adds them to the scene.
+ */
 export function createCustomModels() {
 	const borderGeometry = new THREE.BoxGeometry(52, 7, 128);
 	const borderMaterial = new THREE.MeshStandardMaterial({ color: 0xa3d264 });
@@ -119,7 +126,9 @@ export function createCustomModels() {
 	scene.add(borderRight);
 }
 
-// Function to load block geometries
+/**
+ * Loads block geometries.
+ */
 export function loadBlockGeometries() {
 	blockGeometries["cube"] = new THREE.BoxGeometry(cellSize, cellSize, cellSize);
 	blockGeometries["cylinder"] = new THREE.CylinderGeometry(cellSize / 2, cellSize / 2, cellSize);
@@ -127,16 +136,26 @@ export function loadBlockGeometries() {
 	blockGeometries["tetrahedron"] = new THREE.TetrahedronGeometry(cellSize / 2, 0);
 }
 
-// Function to load block textures
+/**
+ * Loads block textures.
+ */
 export function loadBlockTextures() {
+	// Load textures
 	const textureLoader = new THREE.TextureLoader();
-	blockTextures["brick"] = textureLoader.load("/block-building/textures/brickTexture.png");
-	blockTextures["crate"] = textureLoader.load("/block-building/textures/crateTexture.png");
-	blockTextures["dirt"] = textureLoader.load("/block-building/textures/dirtTexture.png");
-	blockTextures["glass"] = textureLoader.load("/block-building/textures/glassTexture.png");
-	blockTextures["grass"] = textureLoader.load("/block-building/textures/grassTexture.png");
-	blockTextures["plank"] = textureLoader.load("/block-building/textures/plankTexture.png");
-	blockTextures["sand"] = textureLoader.load("/block-building/textures/sandTexture.png");
-	blockTextures["stone"] = textureLoader.load("/block-building/textures/stoneTexture.png");
-	blockTextures["wood"] = textureLoader.load("/block-building/textures/woodTexture.png");
+	const blockTextures = {
+		brick: textureLoader.load("/block-building/textures/brickTexture.png"),
+		crate: textureLoader.load("/block-building/textures/crateTexture.png"),
+		dirt: textureLoader.load("/block-building/textures/dirtTexture.png"),
+		glass: textureLoader.load("/block-building/textures/glassTexture.png"),
+		grass: textureLoader.load("/block-building/textures/grassTexture.png"),
+		plank: textureLoader.load("/block-building/textures/plankTexture.png"),
+		sand: textureLoader.load("/block-building/textures/sandTexture.png"),
+		stone: textureLoader.load("/block-building/textures/stoneTexture.png"),
+		wood: textureLoader.load("/block-building/textures/woodTexture.png"),
+	};
+
+	// Create materials from textures
+	Object.entries(blockTextures).forEach(([key, blockTexture]) => {
+		blockMaterials[key] = new THREE.MeshBasicMaterial({ map: blockTexture });
+	});
 }

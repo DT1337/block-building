@@ -3,140 +3,38 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<meta name="description" content="Free Web tutorials" />
+		<meta name="description" content="This is a simple block building simulator using three.js." />
+		<link rel="stylesheet" href="/styles/styles.css" />
 		<title>Block Building</title>
-		<style>
-			body {
-				margin: 0;
-				width: 100vw;
-				height: 100vh;
-				background-color: #101010;
-				display: flex;
-				justify-content: center;
-				align-items: center;
-			}
-
-			canvas {
-				display: block;
-			}
-
-			.debugContainer {
-				position: absolute;
-				top: 15px;
-				left: 15px;
-				padding: 10px;
-				color: black;
-				background-color: #f0f0f0;
-				border-radius: 24px;
-			}
-
-			.container {
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				width: 100vw;
-				height: 100vh;
-			}
-
-			.matrialContainer {
-				position: absolute;
-				bottom: 0;
-			}
-
-			.geometryContainer {
-				position: absolute;
-				bottom: 0;
-				left: 20px;
-			}
-
-			.optionsContainer {
-				position: absolute;
-				bottom: 0;
-				right: 20px;
-			}
-
-			.hotbar {
-				display: flex;
-				justify-content: center;
-				background-color: rgba(64, 64, 64, 0.7);
-				box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-			}
-
-			.slot {
-				width: 50px;
-				height: 50px;
-				border: 5px solid #999;
-				padding: 10px;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				position: relative;
-				cursor: pointer;
-			}
-
-			.slot img {
-				max-width: 100%;
-				max-height: 100%;
-			}
-
-			.slot:hover {
-				border-color: #666;
-			}
-
-			.selected {
-				border: 5px solid #ccc;
-				background-color: rgba(80, 80, 80, 0.9);
-			}
-
-			.compass button {
-				font-size: 30px;
-				font-weight: bold;
-				width: 40px;
-				height: 40px;
-				background-color: rgba(255, 255, 255, 0.3);
-				border: none;
-				border-radius: 9999px;
-				order: 1;
-			}
-
-			.compass button:hover {
-				background-color: rgba(255, 255, 255, 0.7);
-			}
-
-			#north {
-				position: absolute;
-				color: red;
-			}
-
-			#east {
-				position: absolute;
-				color: black;
-			}
-
-			#south {
-				position: absolute;
-				color: black;
-			}
-
-			#west {
-				position: absolute;
-				color: black;
-			}
-
-			#topDown {
-				position: absolute;
-				top: 20px;
-				right: 20px;
-				color: black;
-			}
-		</style>
 	</head>
 	<body>
-		<div id="debugContainer" class="debugContainer">(X:0.00, Y:0.00, Z:00.00)</div>
+		<!-- Three.js Script and Container -->
 		<script type="module" src="/scripts/main.js"></script>
 		<div id="container" class="container"></div>
-		<div class="matrialContainer">
-			<div class="hotbar">
+
+		<!-- Coordinates -->
+		<div id="coordinates" class="coordinates">(X:0.00, Y:0.00, Z:00.00)</div>
+
+		<!-- Hotbar -->
+		<div class="hotbar">
+			<!-- Geometry Hotbar -->
+			<div id="geometryContainer" class="hotbarContainer">
+				<div class="slot geometrySlot selected" id="cube">
+					<img src="/geometry/cubeGeometry.png" alt="Cube" />
+				</div>
+				<div class="slot geometrySlot" id="cylinder">
+					<img src="/geometry/cylinderGeometry.png" alt="Cylinder" />
+				</div>
+				<div class="slot geometrySlot" id="sphere">
+					<img src="/geometry/sphereGeometry.png" alt="Sphere" />
+				</div>
+				<div class="slot geometrySlot" id="tetrahedron">
+					<img src="/geometry/tetrahedronGeometry.png" alt="Tetrahedron" />
+				</div>
+			</div>
+
+			<!-- Material Hotbar -->
+			<div id="materialContainer" class="hotbarContainer">
 				<div class="slot materialSlot selected" id="brick">
 					<img src="/textures/brickTexture.png" alt="Brick" />
 				</div>
@@ -165,37 +63,19 @@
 					<img src="/textures/woodTexture.png" alt="Wood" />
 				</div>
 			</div>
-		</div>
-		<div class="geometryContainer">
-			<div class="hotbar">
-				<div class="slot geometrySlot selected" id="cube">
-					<img src="/geometry/cubeGeometry.png" alt="Cube" />
+
+			<!-- Options Hotbar -->
+			<div id="optionsContainer" class="hotbarContainer">
+				<div class="slot" id="scenicViewToggle">
+					<img src="/icons/scenicView.png" alt="scenicView" />
 				</div>
-				<div class="slot geometrySlot" id="cylinder">
-					<img src="/geometry/cylinderGeometry.png" alt="Cylinder" />
-				</div>
-				<div class="slot geometrySlot" id="sphere">
-					<img src="/geometry/sphereGeometry.png" alt="Sphere" />
-				</div>
-				<div class="slot geometrySlot" id="tetrahedron">
-					<img src="/geometry/tetrahedronGeometry.png" alt="Tetrahedron" />
+				<div class="slot" id="resetButton">
+					<img src="/icons/reset.png" alt="reset" />
 				</div>
 			</div>
 		</div>
-		<div class="optionsContainer">
-			<div class="hotbar">
-				<div class="slot" id="scenicView">
-					<button id="scenicViewToggle">
-						<img src="/icons/scenicView.png" alt="scenicView" />
-					</button>
-				</div>
-				<div class="slot" id="reset">
-					<button id="resetButton">
-						<img src="/icons/reset.png" alt="reset" />
-					</button>
-				</div>
-			</div>
-		</div>
+
+		<!-- Compass -->
 		<div id="compass" class="compass">
 			<button id="north">N</button>
 			<button id="east">E</button>

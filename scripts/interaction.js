@@ -2,9 +2,18 @@ import * as THREE from "three";
 import { getIntersectedObjects, updateInfo, snapPointToGrid, adjustPointForCollisions } from "./helpers.js";
 import { initializeScene, render } from "./initialize.js";
 import { camera, renderer, scene, collisionHelper, updatePreviewBlock, previewBlock } from "./scene.js";
-import { container, elements, compassNorthButton, compassEastButton, compassSouthButton, compassWestButton } from "./constants.js";
-import { blockGeometries, blockTextures } from "./assets.js";
+import {
+	container,
+	elements,
+	scenicViewToggle,
+	compassNorthButton,
+	compassEastButton,
+	compassSouthButton,
+	compassWestButton,
+} from "./constants.js";
+import { blockGeometries, blockMaterials } from "./assets.js";
 
+// Variables to store current block geometry, material, and scene state
 export let currentBlockGeometry;
 export let currentBlockMaterial;
 export let isScenicViewActive = false;
@@ -12,7 +21,10 @@ export let cameraPosition = new THREE.Vector3(150, 90, 0);
 let isTopDownView = false;
 let isDeleting = false;
 
-// Function to handle mouse movement event
+/**
+ * Handles mouse movement events.
+ * @param {MouseEvent} event - The mouse event object.
+ */
 export function onMouseMove(event) {
 	if (isScenicViewActive) {
 		render();
@@ -33,7 +45,10 @@ export function onMouseMove(event) {
 	render();
 }
 
-// Function to handle mouse click event
+/**
+ * Handles mouse click events.
+ * @param {MouseEvent} event - The mouse event object.
+ */
 export function onMouseClick(event) {
 	if (isScenicViewActive) {
 		render();
@@ -58,11 +73,10 @@ export function onMouseClick(event) {
 			const block = new THREE.Mesh(currentBlockGeometry, currentBlockMaterial);
 			block.position.copy(snappedPoint);
 
-			// If the blocks y position is adjusted due to gravitation, animate its falling
+			// Animate block falling if necessary
 			if (adjustedPoint.y !== snappedPoint.y) {
 				animateBlockFalling(block, adjustedPoint);
 			} else {
-				// Otherwise directly add the block to the scene
 				scene.add(block);
 				elements.push(block);
 				render();
@@ -73,7 +87,11 @@ export function onMouseClick(event) {
 	}
 }
 
-// Function to animate the falling of a block
+/**
+ * Animates the falling of a block to avoid collisions.
+ * @param {THREE.Mesh} block - The block mesh.
+ * @param {THREE.Vector3} finalPosition - The final position of the block.
+ */
 function animateBlockFalling(block, finalPosition) {
 	const initialPosition = block.position.clone();
 	const initialScale = block.scale.clone();
@@ -112,7 +130,10 @@ function animateBlockFalling(block, finalPosition) {
 
 	updatePositionAndScale();
 }
-// Function to handle window resize event
+
+/**
+ * Handles window resize events.
+ */
 export function onWindowResize() {
 	camera.aspect = container.offsetWidth / container.offsetHeight;
 	camera.updateProjectionMatrix();
@@ -120,28 +141,41 @@ export function onWindowResize() {
 	render();
 }
 
-// Function to handle block geometry select
+/**
+ * Selects the block geometry.
+ * @param {string} selectGeometry - The selected geometry type.
+ */
 export function selectBlockGeometry(selectGeometry) {
 	currentBlockGeometry = blockGeometries[selectGeometry];
 	updatePreviewBlock();
+	render();
 }
 
-// Function to handle block material select
+/**
+ * Selects the block material.
+ * @param {string} selectMaterial - The selected material type.
+ */
 export function selectBlockMaterial(selectMaterial) {
-	currentBlockMaterial = new THREE.MeshBasicMaterial({ map: blockTextures[selectMaterial] });
+	currentBlockMaterial = blockMaterials[selectMaterial];
+	render();
 }
 
-// Function to toggle scenic view
+/**
+ * Toggles scenic view mode.
+ */
 export function toggleScenicView() {
+	scenicViewToggle.classList.toggle("selected");
 	isScenicViewActive = !isScenicViewActive;
+	render();
 }
 
-// Function to handle reset button
+/**
+ * Handles the reset button click.
+ */
 export function handleResetButton() {
 	while (scene.children.length > 0) {
 		scene.remove(scene.children[0]);
 	}
-	// Optionally, dispose of resources associated with the objects in the scene
 	scene.traverse(function (obj) {
 		if (obj instanceof THREE.Mesh) {
 			obj.geometry.dispose();
@@ -151,12 +185,17 @@ export function handleResetButton() {
 	initializeScene();
 }
 
-// Function to initialize the compass
+/**
+ * Initializes the compass buttons.
+ */
 export function initializeCompass() {
 	positionButtons("north");
 }
 
-// Function to handle the compass
+/**
+ * Handles compass button clicks.
+ * @param {MouseEvent} event - The mouse event object.
+ */
 export function handleCompass(event) {
 	let y = isTopDownView ? 200 : 90;
 
@@ -184,8 +223,13 @@ export function handleCompass(event) {
 		default:
 			break;
 	}
+	render();
 }
 
+/**
+ * Positions the compass buttons based on the current direction.
+ * @param {string} direction - The current compass direction.
+ */
 function positionButtons(direction) {
 	let north = "top: 20px; left: 50%;";
 	let east = "top: 50%; right: 20px;";
@@ -222,16 +266,22 @@ function positionButtons(direction) {
 	}
 }
 
-// Function to handle document key down event
+/**
+ * Handles document key down events.
+ * @param {KeyboardEvent} event - The keyboard event object.
+ */
 export function onDocumentKeyDown(event) {
-	if (event.keyCode == 32) {
+	if (event.key == " ") {
 		isDeleting = true;
 	}
 }
 
-// Function to handle document key up event
+/**
+ * Handles document key up events.
+ * @param {KeyboardEvent} event - The keyboard event object.
+ */
 export function onDocumentKeyUp(event) {
-	if (event.keyCode == 32) {
+	if (event.key == " ") {
 		isDeleting = false;
 	}
 }

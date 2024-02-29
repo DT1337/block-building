@@ -1,20 +1,29 @@
 import * as THREE from "three";
 import { camera, scene } from "./scene.js";
-import { container, debugContainer, elements, cellSize, minGridValue, maxGridValue } from "./constants";
+import { container, coordinates, elements, cellSize, minGridValue, maxGridValue } from "./constants";
 
-// Function to get intersected objects
+/**
+ * Retrieves the objects intersected by the mouse ray.
+ * @param {MouseEvent} event - The mouse event object.
+ * @returns {Array<THREE.Intersection>} - Array of intersected objects.
+ */
 export function getIntersectedObjects(event) {
 	const mouse = new THREE.Vector2();
+	const raycaster = new THREE.Raycaster();
+
 	mouse.x = (event.clientX / container.offsetWidth) * 2 - 1;
 	mouse.y = -(event.clientY / container.offsetHeight) * 2 + 1;
 
-	const raycaster = new THREE.Raycaster();
 	raycaster.setFromCamera(mouse, camera);
 
 	return raycaster.intersectObjects(elements);
 }
 
-// Function to snap a point to the nearest grid position
+/**
+ * Snaps a point to the grid.
+ * @param {THREE.Vector3} point - The point to snap.
+ * @returns {THREE.Vector3} - The snapped point.
+ */
 export function snapPointToGrid(point) {
 	const snappedPoint = point.clone();
 	snappedPoint.x = Math.min(
@@ -29,7 +38,11 @@ export function snapPointToGrid(point) {
 	return snappedPoint;
 }
 
-// Function to adjust a point to avoid collisions with existing objects
+/**
+ * Adjusts a point to avoid collisions.
+ * @param {THREE.Vector3} point - The point to adjust.
+ * @returns {THREE.Vector3} - The adjusted point.
+ */
 export function adjustPointForCollisions(point) {
 	const raycaster = new THREE.Raycaster(point.clone().add(new THREE.Vector3(0, -cellSize / 2, 0)), new THREE.Vector3(0, -1, 0));
 	const intersects = raycaster.intersectObjects(scene.children);
@@ -40,7 +53,10 @@ export function adjustPointForCollisions(point) {
 	return point;
 }
 
-// Function to update debug information
+/**
+ * Updates the information display.
+ * @param {THREE.Vector3} intersectionPoint - The point of intersection.
+ */
 export function updateInfo(point) {
-	debugContainer.innerText = `(X:${point.x.toFixed(2)}, Y:${point.y.toFixed(2)}, Z:${point.z.toFixed(2)})`;
+	coordinates.innerText = `(X:${point.x.toFixed(2)}, Y:${point.y.toFixed(2)}, Z:${point.z.toFixed(2)})`;
 }

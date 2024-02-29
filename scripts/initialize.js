@@ -6,7 +6,7 @@ import {
 	addLights,
 	updatePreviewBlock,
 	updateCameraPosition,
-	animateBalloon,
+	animateBalloons,
 } from "./scene.js";
 import { loadModels, createCustomModels, loadBlockTextures, loadBlockGeometries } from "./assets.js";
 import {
@@ -25,7 +25,9 @@ import {
 } from "./interaction.js";
 import { container, scenicViewToggle, resetButton, compass } from "./constants.js";
 
-// Function to initialize the application
+/**
+ * Initializes the scene, loads models, sets up event listeners, and selects default block geometry and material.
+ */
 export function initializeScene() {
 	addGridHelper();
 	addLights();
@@ -35,13 +37,11 @@ export function initializeScene() {
 	loadBlockTextures();
 	initializeCompass();
 
-	// Select default block geometry and material
 	selectBlockGeometry("cube");
 	selectBlockMaterial("brick");
 
 	updatePreviewBlock();
 
-	// Event listeners
 	window.addEventListener("resize", onWindowResize);
 	container.addEventListener("mousemove", onMouseMove);
 	container.addEventListener("click", onMouseClick);
@@ -78,10 +78,12 @@ export function initializeScene() {
 	});
 }
 
-// Function to start the render loop
+/**
+ * Initiates the render loop.
+ */
 export function render() {
 	if (isScenicViewActive) {
-		animateBalloon();
+		animateBalloons();
 		requestAnimationFrame(render);
 	}
 
