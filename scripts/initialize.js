@@ -1,4 +1,15 @@
 import {
+	container,
+	geometrySlots,
+	materialSlots,
+	examplesButton,
+	examplesCloseButton,
+	examplesModal,
+	scenicViewToggle,
+	resetButton,
+	compass,
+} from "./constants.js";
+import {
 	scene,
 	camera,
 	renderer,
@@ -23,7 +34,6 @@ import {
 	isScenicViewActive,
 	initializeCompass,
 } from "./interaction.js";
-import { container, scenicViewToggle, resetButton, compass } from "./constants.js";
 
 /**
  * Initializes the scene, loads models, sets up event listeners, and selects default block geometry and material.
@@ -43,17 +53,30 @@ export function initializeScene() {
 	updatePreviewBlock();
 
 	window.addEventListener("resize", onWindowResize);
-	container.addEventListener("mousemove", onMouseMove);
-	container.addEventListener("click", onMouseClick);
-	scenicViewToggle.addEventListener("click", toggleScenicView);
-	resetButton.addEventListener("click", handleResetButton);
+	window.onclick = function (event) {
+		if (event.target == modal) {
+			modal.style.display = "none";
+		}
+	};
+
 	document.addEventListener("keydown", onDocumentKeyDown);
 	document.addEventListener("keyup", onDocumentKeyUp);
-	compass.addEventListener("click", handleCompass);
+	container.addEventListener("mousemove", onMouseMove);
+	container.addEventListener("click", onMouseClick);
 
-	const geometrySlots = document.querySelectorAll(".geometrySlot");
+	scenicViewToggle.onclick = toggleScenicView;
+	resetButton.onclick = handleResetButton;
+	examplesButton.onclick = () => {
+		examplesModal.style.display = "block";
+	};
+	examplesCloseButton.onclick = () => {
+		examplesModal.style.display = "none";
+	};
+
+	compass.onclick = handleCompass;
+
 	geometrySlots.forEach((geometrySlot) => {
-		geometrySlot.addEventListener("click", () => {
+		geometrySlot.onclick = () => {
 			geometrySlots.forEach((geometrySlot) => {
 				geometrySlot.classList.remove("selected");
 			});
@@ -61,12 +84,11 @@ export function initializeScene() {
 
 			const itemId = geometrySlot.id;
 			selectBlockGeometry(itemId);
-		});
+		};
 	});
 
-	const materialSlots = document.querySelectorAll(".materialSlot");
 	materialSlots.forEach((materialSlot) => {
-		materialSlot.addEventListener("click", () => {
+		materialSlot.onclick = () => {
 			materialSlots.forEach((materialSlot) => {
 				materialSlot.classList.remove("selected");
 			});
@@ -74,7 +96,7 @@ export function initializeScene() {
 
 			const itemId = materialSlot.id;
 			selectBlockMaterial(itemId);
-		});
+		};
 	});
 }
 

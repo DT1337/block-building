@@ -10,6 +10,11 @@ canvas {
 	display: block;
 }
 
+p {
+	padding: 0;
+	margin: 0;
+}
+
 .container {
 	display: flex;
 	justify-content: center;
@@ -26,6 +31,32 @@ canvas {
 	color: black;
 	background-color: #80d2ff;
 	border-radius: 24px;
+}
+
+.info {
+	position: absolute;
+	top: 60px;
+	left: 15px;
+	display: flex;
+	flex-direction: col;
+	background-color: #80d2ff;
+	border-radius: 15px;
+	max-width: 200px;
+	height: 80px;
+	padding: 5px 10px 5px 60px;
+	font-size: 14px;
+}
+
+.info p {
+	margin: 10px 0;
+}
+
+.info:before {
+	content: "🛈";
+	position: absolute;
+	top: 25px;
+	left: 15px;
+	font-size: 30px;
 }
 
 .hotbar {
@@ -59,9 +90,10 @@ canvas {
 }
 
 .slot {
-	width: 50px;
-	height: 50px;
+	width: 80px;
+	height: 80px;
 	border: 5px solid #999;
+	background-color: transparent;
 	padding: 10px;
 	display: flex;
 	align-items: center;
@@ -79,6 +111,11 @@ canvas {
 	border-color: #666;
 }
 
+.slot:focus {
+	border-color: #ee0000;
+	outline: none;
+}
+
 .selected {
 	border: 5px solid #0ea5e9;
 	background-color: rgba(80, 80, 80, 0.9);
@@ -92,11 +129,14 @@ canvas {
 	background-color: rgba(255, 255, 255, 0.3);
 	border: none;
 	border-radius: 9999px;
-	order: 1;
 }
 
 .compass button:hover {
 	background-color: rgba(255, 255, 255, 0.7);
+}
+
+.compass button:focus {
+	outline: 5px solid #ee0000;
 }
 
 #north {
@@ -124,4 +164,63 @@ canvas {
 	top: 20px;
 	right: 20px;
 	color: black;
+}
+
+.modal {
+	display: none;
+	position: fixed;
+	z-index: 1;
+	left: 0;
+	top: 0;
+	width: 100vw;
+	height: 100vh;
+	overflow-y: scroll;
+	background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modalHeaderOptions {
+	display: flex;
+	justify-content: end;
+}
+
+.modalContent {
+	background-color: #0ea5e9;
+	margin: 5% auto;
+	padding: 20px;
+	border: 1px solid #0ea5e9;
+	border-radius: 24px;
+	width: 80%;
+}
+
+.modalContent button {
+	align-items: left;
+	width: 40px;
+	height: 40px;
+	background-color: rgba(255, 255, 255, 0.3);
+	border: none;
+	border-radius: 9999px;
+}
+
+.modalContent button:hover {
+	background-color: rgba(255, 255, 255, 0.7);
+}
+
+.modalContent button:focus {
+	outline: 5px solid #ee0000;
+}
+
+.modalImageContainer {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+	gap: 5px;
+	margin-top: 50px;
+}
+
+.modalImageContainer img {
+	width: 45%;
+	margin: 5px 10px;
+	border: 5px solid rgba(255, 255, 255, 0.3);
+	border-radius: 5px;
 }

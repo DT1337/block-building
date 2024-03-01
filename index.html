@@ -15,63 +15,74 @@
 		<!-- Coordinates -->
 		<div id="coordinates" class="coordinates">(X:0.00, Y:0.00, Z:00.00)</div>
 
+		<!-- Informations -->
+		<div id="info" class="info">
+			<div>
+				<p><strong>RIGHT-CLICK</strong> to place blocks.</p>
+				<p>Hold <strong>SPACEBAR</strong> and then <br /><strong>RIGHT-CLICK</strong> to delete blocks.</p>
+			</div>
+		</div>
+
 		<!-- Hotbar -->
 		<div class="hotbar">
 			<!-- Geometry Hotbar -->
 			<div id="geometryContainer" class="hotbarContainer">
-				<div class="slot geometrySlot selected" id="cube">
+				<button class="slot geometrySlot selected" id="cube">
 					<img src="/geometry/cubeGeometry.png" alt="Cube" />
-				</div>
-				<div class="slot geometrySlot" id="cylinder">
+				</button>
+				<button class="slot geometrySlot" id="cylinder">
 					<img src="/geometry/cylinderGeometry.png" alt="Cylinder" />
-				</div>
-				<div class="slot geometrySlot" id="sphere">
+				</button>
+				<button class="slot geometrySlot" id="sphere">
 					<img src="/geometry/sphereGeometry.png" alt="Sphere" />
-				</div>
-				<div class="slot geometrySlot" id="tetrahedron">
+				</button>
+				<button class="slot geometrySlot" id="tetrahedron">
 					<img src="/geometry/tetrahedronGeometry.png" alt="Tetrahedron" />
-				</div>
+				</button>
 			</div>
 
 			<!-- Material Hotbar -->
 			<div id="materialContainer" class="hotbarContainer">
-				<div class="slot materialSlot selected" id="brick">
+				<button class="slot materialSlot selected" id="brick">
 					<img src="/textures/brickTexture.png" alt="Brick" />
-				</div>
-				<div class="slot materialSlot" id="crate">
+				</button>
+				<button class="slot materialSlot" id="crate">
 					<img src="/textures/crateTexture.png" alt="Crate" />
-				</div>
-				<div class="slot materialSlot" id="dirt">
+				</button>
+				<button class="slot materialSlot" id="dirt">
 					<img src="/textures/dirtTexture.png" alt="Dirt" />
-				</div>
-				<div class="slot materialSlot" id="glass">
+				</button>
+				<button class="slot materialSlot" id="glass">
 					<img src="/textures/glassTexture.png" alt="Glass" />
-				</div>
-				<div class="slot materialSlot" id="grass">
+				</button>
+				<button class="slot materialSlot" id="grass">
 					<img src="/textures/grassTexture.png" alt="Grass" />
-				</div>
-				<div class="slot materialSlot" id="plank">
+				</button>
+				<button class="slot materialSlot" id="plank">
 					<img src="/textures/plankTexture.png" alt="Plank" />
-				</div>
-				<div class="slot materialSlot" id="sand">
+				</button>
+				<button class="slot materialSlot" id="sand">
 					<img src="/textures/sandTexture.png" alt="Sand" />
-				</div>
-				<div class="slot materialSlot" id="stone">
+				</button>
+				<button class="slot materialSlot" id="stone">
 					<img src="/textures/stoneTexture.png" alt="Stone" />
-				</div>
-				<div class="slot materialSlot" id="wood">
+				</button>
+				<button class="slot materialSlot" id="wood">
 					<img src="/textures/woodTexture.png" alt="Wood" />
-				</div>
+				</button>
 			</div>
 
 			<!-- Options Hotbar -->
 			<div id="optionsContainer" class="hotbarContainer">
-				<div class="slot" id="scenicViewToggle">
+				<button class="slot" id="examplesButton">
+					<img src="/icons/examples.png" alt="examples" />
+				</button>
+				<button class="slot" id="scenicViewToggle">
 					<img src="/icons/scenicView.png" alt="scenicView" />
-				</div>
-				<div class="slot" id="resetButton">
+				</button>
+				<button class="slot" id="resetButton">
 					<img src="/icons/reset.png" alt="reset" />
-				</div>
+				</button>
 			</div>
 		</div>
 
@@ -82,6 +93,21 @@
 			<button id="south">S</button>
 			<button id="west">W</button>
 			<button id="topDown">T</button>
+		</div>
+
+		<!-- Examples Modal -->
+		<div id="examplesModal" class="modal">
+			<div class="modalContent">
+				<div class="modalHeaderOptions">
+					<button id="examplesCloseButton">X</button>
+				</div>
+				<h1>Examples</h1>
+				<p>Here are some example builds:</p>
+				<div class="modalImageContainer">
+					<img src="https://via.placeholder.com/1920x1080" alt="Example 1" />
+					<img src="https://via.placeholder.com/1920x1080" alt="Example 2" />
+				</div>
+			</div>
 		</div>
 	</body>
 </html>
