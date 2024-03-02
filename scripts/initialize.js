@@ -18,6 +18,7 @@ import {
 	updatePreviewBlock,
 	updateCameraPosition,
 	animateBalloons,
+	animateShip,
 } from "./scene.js";
 import { loadModels, createCustomModels, loadBlockTextures, loadBlockGeometries } from "./assets.js";
 import {
@@ -54,8 +55,8 @@ export function initializeScene() {
 
 	window.addEventListener("resize", onWindowResize);
 	window.onclick = function (event) {
-		if (event.target == modal) {
-			modal.style.display = "none";
+		if (event.target == examplesModal) {
+			examplesModal.style.display = "none";
 		}
 	};
 
@@ -67,7 +68,7 @@ export function initializeScene() {
 	scenicViewToggle.onclick = toggleScenicView;
 	resetButton.onclick = handleResetButton;
 	examplesButton.onclick = () => {
-		examplesModal.style.display = "block";
+		examplesModal.style.display = "flex";
 	};
 	examplesCloseButton.onclick = () => {
 		examplesModal.style.display = "none";
@@ -106,6 +107,7 @@ export function initializeScene() {
 export function render() {
 	if (isScenicViewActive) {
 		animateBalloons();
+		animateShip();
 		requestAnimationFrame(render);
 	}
 

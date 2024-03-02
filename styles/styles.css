@@ -4,6 +4,7 @@ body {
 	width: 100vw;
 	height: 100vh;
 	background-color: #0ea5e9;
+	background: linear-gradient(to bottom, #7db9e8 0%, #207cca 50%, #2989d8 51%, #1e5799 100%);
 }
 
 canvas {
@@ -168,13 +169,14 @@ p {
 
 .modal {
 	display: none;
+	justify-content: center;
+	align-items: center;
 	position: fixed;
 	z-index: 1;
 	left: 0;
 	top: 0;
 	width: 100vw;
 	height: 100vh;
-	overflow-y: scroll;
 	background-color: rgba(0, 0, 0, 0.4);
 }
 
@@ -185,11 +187,12 @@ p {
 
 .modalContent {
 	background-color: #0ea5e9;
-	margin: 5% auto;
+	margin: auto auto;
 	padding: 20px;
 	border: 1px solid #0ea5e9;
 	border-radius: 24px;
 	width: 80%;
+	height: 80%;
 }
 
 .modalContent button {

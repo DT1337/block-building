@@ -45,6 +45,13 @@ export function loadModels() {
 			scale: 0.5,
 		},
 		{
+			url: "/block-building/models/pirate_ship.glb",
+			id: "pirate_ship",
+			position: new THREE.Vector3(0, 0, 0),
+			scale: 1,
+			rotation: new THREE.Vector3(0, -Math.PI / 2, 0),
+		},
+		{
 			url: "/block-building/models/castle_garden_-_voxel_art.glb",
 			id: "castle_front_left",
 			position: new THREE.Vector3(64, -3, 64),
@@ -89,6 +96,11 @@ export function loadModels() {
 				modelWrapper.userData.id = modelData.id;
 
 				scene.add(modelWrapper);
+
+				if (modelData.id === "pirate_ship") {
+					modelWrapper.position.set(new THREE.Vector3(-320, 0, -320));
+				}
+
 				render();
 			},
 			undefined,

@@ -14,7 +14,6 @@ export let previewBlock;
 export function createScene() {
 	// Create the scene
 	scene = new THREE.Scene();
-	scene.background = new THREE.Color(0x0ea5e9);
 
 	// Create the camera
 	const aspectRatio = container.offsetWidth / container.offsetHeight;
@@ -23,8 +22,9 @@ export function createScene() {
 	camera.lookAt(0, 0, 0);
 
 	// Create the renderer
-	renderer = new THREE.WebGLRenderer({ antialias: true });
+	renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
 	renderer.setSize(container.offsetWidth, container.offsetHeight);
+	renderer.setClearColor(0x00000000, 0);
 	container.appendChild(renderer.domElement);
 }
 
@@ -32,20 +32,28 @@ export function createScene() {
  * Adds the grid helper to the scene.
  */
 export function addGridHelper() {
-	const gridHelper = new THREE.GridHelper(cellSize * gridDimensions, gridDimensions);
+	const gridHelper = new THREE.GridHelper(
+		cellSize * gridDimensions,
+		gridDimensions,
+		new THREE.Color(0xee0000),
+		new THREE.Color(0x646464)
+	);
+	gridHelper.position.y = 0.1;
 	scene.add(gridHelper);
 
 	// Add collision helper for physics
-	const collisionHelperGeometry = new THREE.PlaneGeometry(128, 128);
-	collisionHelperGeometry.rotateX(-Math.PI / 2);
-	collisionHelper = new THREE.Mesh(collisionHelperGeometry, new THREE.MeshBasicMaterial({ visible: false }));
+	const collisionHelperGeometry = new THREE.BoxGeometry(128, 0.1, 128);
+	collisionHelper = new THREE.Mesh(collisionHelperGeometry, new THREE.MeshStandardMaterial({ color: 0xa3d264 }));
 	scene.add(collisionHelper);
 	elements.push(collisionHelper);
 
 	// Add surface for visual representation
-	const surfaceGeometry = new THREE.PlaneGeometry(10000, 10000);
+	const textureLoader = new THREE.TextureLoader();
+	const surfaceTexture = textureLoader.load("/block-building/textures/waveSurface.png");
+
+	const surfaceGeometry = new THREE.CircleGeometry(750, 750);
 	surfaceGeometry.rotateX(-Math.PI / 2);
-	const surfaceMaterial = new THREE.MeshBasicMaterial({ color: 0x0ea5e9 });
+	const surfaceMaterial = new THREE.MeshBasicMaterial({ color: 0x0ea5e9, map: surfaceTexture });
 	const surface = new THREE.Mesh(surfaceGeometry, surfaceMaterial);
 	scene.add(surface);
 }
@@ -144,4 +152,27 @@ export function animateBalloons() {
 	let morphTarget = new THREE.Vector3();
 	morphTarget.lerpVectors(morphTargets[morphIndex], morphTargets[nextMorphIndex], morphValue);
 	balloons.forEach((balloon) => balloon.scale.copy(morphTarget));
+}
+
+/**
+ * Animates the ship in the scene.
+ */
+
+export function animateShip() {
+	let ship;
+
+	scene.traverse(function (child) {
+		if (child.userData && child.userData.id === "pirate_ship") {
+			ship = child;
+		}
+	});
+
+	const radius = 320;
+	const angle = Date.now() * 0.00025;
+	const x = Math.cos(angle) * radius;
+	const z = -Math.sin(angle) * radius;
+	ship.position.set(x, 0, z);
+
+	const centerAngle = Math.atan2(ship.position.x, ship.position.z);
+	ship.rotation.y = centerAngle + Math.PI / 2;
 }
