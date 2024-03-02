@@ -20,6 +20,7 @@ export let isScenicViewActive = false;
 export let cameraPosition = new THREE.Vector3(150, 90, 0);
 let isTopDownView = false;
 let isDeleting = false;
+let isPlacingBlock = false;
 
 /**
  * Handles mouse movement events.
@@ -27,7 +28,6 @@ let isDeleting = false;
  */
 export function onMouseMove(event) {
 	if (isScenicViewActive) {
-		render();
 		return;
 	}
 
@@ -50,8 +50,7 @@ export function onMouseMove(event) {
  * @param {MouseEvent} event - The mouse event object.
  */
 export function onMouseClick(event) {
-	if (isScenicViewActive) {
-		render();
+	if (isScenicViewActive || isPlacingBlock) {
 		return;
 	}
 
@@ -125,10 +124,13 @@ function animateBlockFalling(block, finalPosition) {
 
 		if (progress < 1) {
 			requestAnimationFrame(updatePositionAndScale);
+		} else {
+			isPlacingBlock = false;
 		}
 	}
 
 	updatePositionAndScale();
+	isPlacingBlock = true;
 }
 
 /**
