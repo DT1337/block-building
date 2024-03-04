@@ -145,7 +145,6 @@ export function loadBlockGeometries() {
 	blockGeometries["cube"] = new THREE.BoxGeometry(cellSize, cellSize, cellSize);
 	blockGeometries["cylinder"] = new THREE.CylinderGeometry(cellSize / 2, cellSize / 2, cellSize);
 	blockGeometries["sphere"] = new THREE.SphereGeometry(cellSize / 2, 64, 64);
-	blockGeometries["tetrahedron"] = new THREE.TetrahedronGeometry(cellSize / 2, 0);
 }
 
 /**
