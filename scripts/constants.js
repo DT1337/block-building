@@ -20,7 +20,7 @@ export const gridDimensions = 32;
 export const cellSize = 4;
 
 // Minimum and maximum grid values
-export const minGridValue = -(gridDimensions * cellSize) / 2 - cellSize / 2;
+export const minGridValue = -(gridDimensions * cellSize) / 2 + cellSize / 2;
 export const maxGridValue = (gridDimensions * cellSize) / 2 - cellSize / 2;
 
 /**
