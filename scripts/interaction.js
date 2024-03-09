@@ -10,6 +10,7 @@ import {
 	compassEastButton,
 	compassSouthButton,
 	compassWestButton,
+	gravitationButton,
 } from "./constants.js";
 import { blockGeometries, blockMaterials } from "./assets.js";
 
@@ -18,6 +19,7 @@ export let currentBlockGeometry;
 export let currentBlockMaterial;
 export let isScenicViewActive = false;
 export let cameraPosition = new THREE.Vector3(150, 90, 0);
+let isGravitationActive = true;
 let isTopDownView = false;
 let isDeleting = false;
 let isPlacingBlock = false;
@@ -73,7 +75,7 @@ export function onMouseClick(event) {
 			block.position.copy(snappedPoint);
 
 			// Animate block falling if necessary
-			if (adjustedPoint.y !== snappedPoint.y) {
+			if (isGravitationActive && adjustedPoint.y !== snappedPoint.y) {
 				animateBlockFalling(block, adjustedPoint);
 			} else {
 				scene.add(block);
@@ -159,6 +161,15 @@ export function selectBlockGeometry(selectGeometry) {
  */
 export function selectBlockMaterial(selectMaterial) {
 	currentBlockMaterial = blockMaterials[selectMaterial];
+	render();
+}
+
+/**
+ * Toggles gravitation.
+ */
+export function toggleGravitation() {
+	gravitationButton.classList.toggle("selected");
+	isGravitationActive = !isGravitationActive;
 	render();
 }
 

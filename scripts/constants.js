@@ -4,6 +4,7 @@ export let coordinates; // Coordinates display element
 
 export let geometrySlots; // Geometry hotbar slots
 export let materialSlots; // Material hotbar slots
+export let gravitationButton; // Gravitation button
 export let examplesButton; // Examples button
 export let examplesCloseButton; // Examples close button
 export let examplesModal; // Examples modal
@@ -32,6 +33,8 @@ export function initializeConstants() {
 
 	geometrySlots = document.querySelectorAll(".geometrySlot");
 	materialSlots = document.querySelectorAll(".materialSlot");
+
+	gravitationButton = document.getElementById("gravitationButton");
 
 	examplesButton = document.getElementById("examplesButton");
 	examplesCloseButton = document.getElementById("examplesCloseButton");

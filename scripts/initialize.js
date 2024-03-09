@@ -2,6 +2,7 @@ import {
 	container,
 	geometrySlots,
 	materialSlots,
+	gravitationButton,
 	examplesButton,
 	examplesCloseButton,
 	examplesModal,
@@ -25,6 +26,7 @@ import {
 	onWindowResize,
 	onMouseClick,
 	onMouseMove,
+	toggleGravitation,
 	toggleScenicView,
 	handleResetButton,
 	handleCompass,
@@ -65,14 +67,16 @@ export function initializeScene() {
 	container.addEventListener("mousemove", onMouseMove);
 	container.addEventListener("click", onMouseClick);
 
-	scenicViewToggle.onclick = toggleScenicView;
-	resetButton.onclick = handleResetButton;
+	gravitationButton.onclick = toggleGravitation;
 	examplesButton.onclick = () => {
 		examplesModal.style.display = "flex";
 	};
 	examplesCloseButton.onclick = () => {
 		examplesModal.style.display = "none";
 	};
+
+	scenicViewToggle.onclick = toggleScenicView;
+	resetButton.onclick = handleResetButton;
 
 	compass.onclick = () => handleCompass(event.target.id);
 
