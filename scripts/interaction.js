@@ -186,17 +186,23 @@ export function toggleScenicView() {
  * Handles the reset button click.
  */
 export function handleResetButton() {
-	while (scene.children.length > 0) {
-		scene.remove(scene.children[0]);
-	}
-	scene.traverse(function (obj) {
-		if (obj instanceof THREE.Mesh) {
-			obj.geometry.dispose();
-			obj.material.dispose();
+	const confirmReset = window.confirm(
+		"Are you sure you want to reset?\nKeep in mind that this will delete your entire build and this can not be undone."
+	);
+
+	if (confirmReset) {
+		while (scene.children.length > 0) {
+			scene.remove(scene.children[0]);
 		}
-	});
-	initializeScene();
-	handleCompass();
+		scene.traverse(function (obj) {
+			if (obj instanceof THREE.Mesh) {
+				obj.geometry.dispose();
+				obj.material.dispose();
+			}
+		});
+		initializeScene();
+		handleCompass();
+	}
 }
 
 /**

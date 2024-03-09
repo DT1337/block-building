@@ -56,6 +56,18 @@ export function initializeScene() {
 	updatePreviewBlock();
 
 	window.addEventListener("resize", onWindowResize);
+	window.addEventListener("beforeunload", function (e) {
+		e.preventDefault();
+		e.returnValue = "";
+
+		if (
+			window.confirm(
+				"Are you sure you want to reload this page?\nKeep in mind that this will delete your entire build and this can not be undone."
+			)
+		) {
+			window.location.reload();
+		}
+	});
 	window.onclick = function (event) {
 		if (event.target == examplesModal) {
 			examplesModal.style.display = "none";
