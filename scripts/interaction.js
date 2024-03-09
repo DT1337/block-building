@@ -185,6 +185,7 @@ export function handleResetButton() {
 		}
 	});
 	initializeScene();
+	handleCompass();
 }
 
 /**
@@ -196,35 +197,32 @@ export function initializeCompass() {
 
 /**
  * Handles compass button clicks.
- * @param {MouseEvent} event - The mouse event object.
+ * @param {string} direction - The compass direction that was clicked.
  */
-export function handleCompass(event) {
+export function handleCompass(direction = "north") {
 	let y = isTopDownView ? 200 : 90;
 
-	switch (event.target.id) {
-		case "north":
-			cameraPosition = new THREE.Vector3(150, y, 0);
-			positionButtons("north");
-			break;
+	switch (direction) {
 		case "east":
 			cameraPosition = new THREE.Vector3(0, y, 150);
-			positionButtons("east");
 			break;
 		case "south":
 			cameraPosition = new THREE.Vector3(-150, y, 0);
-			positionButtons("south");
 			break;
 		case "west":
 			cameraPosition = new THREE.Vector3(0, y, -150);
-			positionButtons("west");
 			break;
 		case "topDown":
 			isTopDownView = !isTopDownView;
 			cameraPosition.y = isTopDownView ? 200 : 90;
 			break;
+		case "north":
 		default:
+			cameraPosition = new THREE.Vector3(150, y, 0);
 			break;
 	}
+
+	positionButtons(direction);
 	render();
 }
 

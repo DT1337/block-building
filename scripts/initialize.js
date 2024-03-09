@@ -74,7 +74,7 @@ export function initializeScene() {
 		examplesModal.style.display = "none";
 	};
 
-	compass.onclick = handleCompass;
+	compass.onclick = () => handleCompass(event.target.id);
 
 	geometrySlots.forEach((geometrySlot) => {
 		geometrySlot.onclick = () => {
