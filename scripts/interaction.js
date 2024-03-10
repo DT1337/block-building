@@ -80,7 +80,6 @@ export function onMouseClick(event) {
 			} else {
 				scene.add(block);
 				elements.push(block);
-				render();
 			}
 		}
 
@@ -200,6 +199,9 @@ export function handleResetButton() {
 				obj.material.dispose();
 			}
 		});
+
+		elements.length = 0; // empty elements
+
 		initializeScene();
 		handleCompass();
 	}

@@ -35,6 +35,7 @@ export function snapPointToGrid(point) {
 		maxGridValue,
 		Math.max(minGridValue, Math.floor(snappedPoint.z / cellSize) * cellSize + cellSize / 2)
 	);
+
 	return snappedPoint;
 }
 
@@ -46,10 +47,12 @@ export function snapPointToGrid(point) {
 export function adjustPointForCollisions(point) {
 	const raycaster = new THREE.Raycaster(point.clone().add(new THREE.Vector3(0, -cellSize / 2, 0)), new THREE.Vector3(0, -1, 0));
 	const intersects = raycaster.intersectObjects(scene.children);
+
 	if (intersects.length > 0) {
 		const lowestY = Math.floor(intersects[0].point.y / cellSize) * cellSize;
 		point.y = Math.max(cellSize / 2, lowestY + cellSize / 2);
 	}
+
 	return point;
 }
 
