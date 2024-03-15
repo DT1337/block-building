@@ -53,8 +53,6 @@ export function initializeScene() {
 	selectBlockGeometry("cube");
 	selectBlockMaterial("brick");
 
-	updatePreviewBlock();
-
 	window.addEventListener("resize", onWindowResize);
 	window.addEventListener("beforeunload", function (e) {
 		e.preventDefault();

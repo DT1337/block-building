@@ -46,7 +46,7 @@ export function snapPointToGrid(point) {
  */
 export function adjustPointForCollisions(point) {
 	const raycaster = new THREE.Raycaster(point.clone().add(new THREE.Vector3(0, -cellSize / 2, 0)), new THREE.Vector3(0, -1, 0));
-	const intersects = raycaster.intersectObjects(scene.children);
+	const intersects = raycaster.intersectObjects(elements);
 
 	if (intersects.length > 0) {
 		const lowestY = Math.floor(intersects[0].point.y / cellSize) * cellSize;
